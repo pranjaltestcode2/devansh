@@ -725,5 +725,25 @@
             }, 5000);
         });
     </script>
+    <audio id="bg-music" loop autoplay style="display: none;">
+        <source src="bg music.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <script>
+    // Try to play the music
+    const audio = document.getElementById('bg-music');
+    audio.volume = 0.5; // Set volume to 50%
+    
+    // Try to autoplay (may be blocked by browser)
+    audio.play().catch(error => {
+        // Autoplay was prevented
+        console.log("Autoplay prevented. Music will start on first user interaction.");
+        
+        // Start music on first user click anywhere on page
+        document.addEventListener('click', function() {
+            audio.play();
+        }, { once: true }); // Only run once
+    });
+    </script>
 </body>
 </html>
