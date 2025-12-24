@@ -593,62 +593,61 @@
 
         // Password database
         const passwordDatabase = {
-            "माता": "mom",
-            "पापा": "dad",
-            "दादी": "dadi",
-            "दादू": "dadu",
-            "नानी": "nani",
-            "नानू": "nanu",
-            "बड़ी बुआ": "big bua",
-            "छोटी बुआ": "small bua",
-            "बड़े फूफ़ा": "big fufa",
-            "छोटे फूफा": "small fufa",
-            "प्राची दीदी": "prachi",
-            "फुसफुसिया दीदी": "anjalijha",
-            "अगस्त्य भैया": "krishna",
-            "प्यारे मामू": "shaurabh",
-            "नानी-मौसी" : "anita",
-            "नानी-मौसी" : "nita",
-            "नानी-मौसी" : "nisha",
-            "नानी-मौसी" : "nikita",
-            "नानी-मौसी" : "neha",
-            "मामा-नाना" : "harendra",
-            "मामी-नानी" : "anjalimami",
-            "बुआ-नानी" : "punam",
+            "माता": ["mom"],
+            "पापा": ["dad"],
+            "दादी": ["dadi"],
+            "दादू": ["dadu"],
+            "नानी": ["nani"],
+            "नानू": ["nanu"],
+            "बड़ी बुआ": ["big bua"],
+            "छोटी बुआ": ["small bua"],
+            "बड़े फूफ़ा": ["big fufa"],
+            "छोटे फूफा": ["small fufa"],
+            "प्राची दीदी": ["prachi"],
+            "फुसफुसिया दीदी": ["anjalijha"],
+            "अगस्त्य भैया": ["krishna"],
+            "प्यारे मामू": ["shaurabh"],
+            "नानी-मौसी": ["anita", "nita", "nisha", "nikita", "neha"],
+            "मामा-नाना": ["harendra"],
+            "मामी-नानी": ["anjalimami"],
+            "बुआ-नानी": ["punam"]            
         };
         
         function checkPassword() {
-            const passwordInput = document.getElementById('password').value;
+            const passwordInput = document.getElementById('password').value.trim().toLowerCase();
             const messageElement = document.getElementById('message');
             const guestNameElement = document.getElementById('guestName');
             const passwordScreen = document.getElementById('passwordScreen');
             const invitationScreen = document.getElementById('invitationScreen');
-            
+        
             // Clear previous messages
             messageElement.textContent = '';
             messageElement.className = 'message';
             guestNameElement.textContent = '';
-            
+        
             // Check if password matches any in our database
             let guestName = '';
-            for (const [name, pass] of Object.entries(passwordDatabase)) {
-                if (passwordInput === pass) {
+            
+            // Loop through each guest category
+            for (const [name, passwords] of Object.entries(passwordDatabase)) {
+                // Check if the input password matches any password in the array
+                if (passwords.includes(passwordInput)) {
                     guestName = name;
                     break;
                 }
             }
-            
+        
             if (guestName) {
                 // Password is correct
                 messageElement.textContent = 'पासवर्ड सही है! निमंत्रण प्रदर्शित किया जा रहा है...';
                 messageElement.classList.add('success');
-                
+            
                 // Show personalized greeting
                 setTimeout(() => {
                     passwordScreen.style.display = 'none';
-                    invitationScreen.style.display = 'block';
+                    invitationScreen.style.display = 'block';                   
                     guestNameElement.textContent = `आपका स्वागत है, ${guestName} जी!`;
-                    
+                
                     // Start the countdown
                     startCountdown();
                 }, 1500);
@@ -656,12 +655,12 @@
                 // Password is incorrect
                 messageElement.textContent = 'अमान्य पासवर्ड। कृपया सही पासवर्ड दर्ज करें।';
                 messageElement.classList.add('error');
-                
+            
                 // Clear the input field
                 document.getElementById('password').value = '';
             }
         }
-        
+
         // Allow pressing Enter to submit the password
         document.getElementById('password').addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
